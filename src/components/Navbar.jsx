@@ -27,9 +27,9 @@ const Navbar = () => {
             </div>
             <div></div>
         </div>
-        <div className=' bg-gray-700 px-8 flex items-center gap-6 rounded-md'>
+        <div className=' bg-gray-700 px-8 py-0.5 flex items-center gap-6 rounded-lg cursor-pointer'>
             {timings.map((time,index)=>{
-                return <span key={index} className=' text-gray-400'>{time}</span>
+                return <span key={index} className='text-gray-400 hover:text-gray-200'>{time}</span>
             })}
             <span><HiMiniWrenchScrewdriver className=' text-gray-400 hover:text-gray-200'/></span>
         </div>
