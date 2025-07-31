@@ -5,12 +5,6 @@ import { randomParagraphGenerator } from "../utils/Api.js";
 
 const TypingBox = () => {
     const [paragraph, setParagraph] = useState("")
-
-    // useEffect(() => {
-    //     randomParagraphGenerator().then((text) => {
-    //         setParagraph(text)
-    //     });
-    // }, []);
     
     const restartTest=()=>{
         randomParagraphGenerator().then((text) => {
