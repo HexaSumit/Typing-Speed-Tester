@@ -5,10 +5,18 @@ import { randomParagraphGenerator } from "../utils/Api.js";
 
 const TypingBox = () => {
     const [paragraph, setParagraph] = useState("")
-    
+    const [characterArray,setcharacterArray]=useState([])
+
     const restartTest=()=>{
         randomParagraphGenerator().then((text) => {
             setParagraph(text)
+            let characters=text.split("").map((ch)=>(
+                {
+                    char:ch,
+                    status:"not-typed",
+                }
+            ))
+            setcharacterArray(characters)
         });
     }
     
