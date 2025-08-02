@@ -73,7 +73,8 @@ const TypingBox = () => {
                                         : "text-gray-500"
                             }
                         >
-                            {item.char === " " ? "\u00A0" : item.char}
+                            {/* /u00A0 matlab space hai */}
+                            {item.char === " " ? "\u00A0" : item.char}   
                         </span>
                     ))}
                 </p>
