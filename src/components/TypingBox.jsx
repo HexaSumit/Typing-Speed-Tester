@@ -1,42 +1,67 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { VscDebugRestart } from "react-icons/vsc";
 import { randomParagraphGenerator } from "../utils/Api.js";
-import { Button } from './ui/button.jsx';
+import { Button } from "./ui/button.jsx";
+
+
+
 
 const TypingBox = () => {
-    const [paragraph, setParagraph] = useState("")
-    const [characterArray, setcharacterArray] = useState([])
-    const [currentIdx, setCurrentIdx] = useState(0)  // for checking word by word
+    const [characterArray, setCharacterArray] = useState([]);
+    const [currentIdx, setCurrentIdx] = useState(0);
 
+    // Restart Logic
     const restartTest = () => {
         randomParagraphGenerator().then((text) => {
-            setParagraph(text)
-            let characters = text.split("").map((ch) => (
-                {
-                    char: ch,
-                    status: "not-typed",
-                }
-            ))
-            setcharacterArray(characters)
+            const characters = text.split("").map((ch) => ({
+                char: ch,
+                status: "not-typed",
+            }));
+            setCharacterArray(characters);
+            setCurrentIdx(0); // Reset currentIdx
         });
-    }
-    const handleInput = (e) => {
-        console.log(e.key)
-    }
+    };
 
+    // Load paragraph 
     useEffect(() => {
-        restartTest()
-    }, [])
+        restartTest();
+    }, []);
+
+    // Typing Logic
+    const handleInput = (e) => {
+        const key = e.key;
+
+        // Backspace case
+        if (key === "Backspace" && currentIdx > 0) {
+            const updatedArray = [...characterArray];
+            updatedArray[currentIdx - 1].status = "not-typed";
+            setCharacterArray(updatedArray);
+            setCurrentIdx((prev) => prev - 1);
+            return;
+        }
+
+        //  Normal character case
+        if (currentIdx < characterArray.length && key.length === 1) {
+            const updatedArray = [...characterArray];
+
+            if (key === characterArray[currentIdx].char) {
+                updatedArray[currentIdx].status = "correct";
+            } else {
+                updatedArray[currentIdx].status = "incorrect";
+            }
+
+            setCharacterArray(updatedArray);
+            setCurrentIdx((prev) => prev + 1);
+        }
+    };
 
     return (
         <div className="w-full flex flex-col items-center justify-center pt-8 px-4">
-            {/* Heading */}
             <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
 
-            {/* Text to Type */}
+            {/* Typing Text */}
             <div className="max-w-7xl bg-gray-100 p-6 rounded-xl shadow-md mb-6">
-                <p className="text-2xl text-gray-600 leading-relaxed font-mono tracking-wide">
+                <p className="text-2xl text-gray-600 leading-relaxed font-mono tracking-wide flex flex-wrap whitespace-pre-wrap">
                     {characterArray.map((item, index) => (
                         <span
                             key={index}
@@ -48,13 +73,13 @@ const TypingBox = () => {
                                         : "text-gray-500"
                             }
                         >
-                            {item.char}
+                            {item.char === " " ? "\u00A0" : item.char}
                         </span>
                     ))}
                 </p>
             </div>
 
-            {/* Input Field */}
+            {/*Input Field */}
             <input
                 autoFocus
                 onKeyDown={handleInput}
@@ -63,15 +88,14 @@ const TypingBox = () => {
             />
 
             {/* Restart Button */}
-            <div className=' mt-3'>
-                <Button variant='destructive'>
-                    <span><VscDebugRestart /></span>
-                    <span>Restart</span>
+            <div className="mt-4">
+                <Button onClick={restartTest} variant="destructive" className="flex items-center gap-2">
+                    <VscDebugRestart size={20} />
+                    Restart Test
                 </Button>
             </div>
         </div>
+    );
+};
 
-    )
-}
-
-export default TypingBox
+export default TypingBox;
