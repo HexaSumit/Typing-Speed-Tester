@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { VscDebugRestart } from "react-icons/vsc";
 import { randomParagraphGenerator } from "../utils/Api.js";
 import { Button } from "./ui/button.jsx";
-
+import UseTImer from "../hooks/UseTImer.js";
+// import { TypingContext } from "../context/TypingContext.jsx";
 
 
 
 const TypingBox = () => {
+    const [inputValue, setInputValue] = useState("")
     const [characterArray, setCharacterArray] = useState([]);
     const [currentIdx, setCurrentIdx] = useState(0);
+    const [hasStarted,setHasStarted]=useState(false)//to check whether user started typing or not
+
+    const { seconds, startTimer, resetTimer } = UseTImer(); //taken from useTimer.js
+
+
 
     // Restart Logic
     const restartTest = () => {
@@ -19,6 +26,9 @@ const TypingBox = () => {
             }));
             setCharacterArray(characters);
             setCurrentIdx(0); // Reset currentIdx
+            setHasStarted(false)
+            setInputValue("")
+            resetTimer();
         });
     };
 
@@ -30,6 +40,12 @@ const TypingBox = () => {
     // Typing Logic
     const handleInput = (e) => {
         const key = e.key;
+
+        //  First key press par timer start
+        if (!hasStarted && key.length === 1) {
+            setHasStarted(true);
+            startTimer();
+        }
 
         // Backspace case
         if (key === "Backspace" && currentIdx > 0) {
@@ -59,6 +75,8 @@ const TypingBox = () => {
         <div className="w-full flex flex-col items-center justify-center pt-8 px-4">
             <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
 
+            <h2 className="text-xl mb-3 font-bold text-gray-200">Time Left:{seconds}s</h2>
+
             {/* Typing Text */}
             <div className="max-w-7xl bg-gray-100 p-6 rounded-xl shadow-md mb-6">
                 <p className="text-2xl text-gray-600 leading-relaxed font-mono tracking-wide flex flex-wrap whitespace-pre-wrap">
@@ -74,7 +92,7 @@ const TypingBox = () => {
                             }
                         >
                             {/* /u00A0 matlab space hai */}
-                            {item.char === " " ? "\u00A0" : item.char}   
+                            {item.char === " " ? "\u00A0" : item.char}
                         </span>
                     ))}
                 </p>
@@ -83,6 +101,8 @@ const TypingBox = () => {
             {/*Input Field */}
             <input
                 autoFocus
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleInput}
                 placeholder="Start typing here..."
                 className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-700 shadow-sm"
