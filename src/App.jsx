@@ -1,11 +1,9 @@
-import Navbar from "./components/Navbar"
-import TypingBox from "./components/TypingBox"
+import Home from './pages/Home.jsx'
 
 function App() {
   return (
-    <div className=" bg-gray-800 min-h-screen">
-      <Navbar />
-      <TypingBox />
+    <div className="">
+      <Home />
     </div>
   )
 }
