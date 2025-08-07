@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import { TypingContext } from '../context/TypingContext'
 
-const UseTImer = () => {
+const UseTimer = () => {
     const { time } = useContext(TypingContext)
     const [seconds, setSeconds] = useState(time)
     let intervalRef = useRef(null)
@@ -14,7 +14,6 @@ const UseTImer = () => {
 
     const startTimer = () => {
         if (intervalRef.current) return;
-        setIsActive(true);
         intervalRef.current =setInterval(() => {
             setSeconds((prev) => {
                 if (prev <= 1) {
@@ -36,4 +35,4 @@ const UseTImer = () => {
     return { seconds, startTimer, resetTimer };
 }
 
-export default UseTImer
+export default UseTimer
