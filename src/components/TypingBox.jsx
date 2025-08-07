@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { VscDebugRestart } from "react-icons/vsc";
 import { randomParagraphGenerator } from "../utils/Api.js";
 import { Button } from "./ui/button.jsx";
-import UseTImer from "../hooks/UseTImer.js";
-// import { TypingContext } from "../context/TypingContext.jsx";
+import UseTimer from "../hooks/UseTimer.js";
+import { TypingContext } from "../context/TypingContext.jsx";
 
 
 
@@ -11,9 +11,9 @@ const TypingBox = () => {
     const [inputValue, setInputValue] = useState("")
     const [characterArray, setCharacterArray] = useState([]);
     const [currentIdx, setCurrentIdx] = useState(0);
-    const [hasStarted,setHasStarted]=useState(false)//to check whether user started typing or not
+    const {hasStarted, setHasStarted} = useContext(TypingContext)//to check whether user started typing or not
 
-    const { seconds, startTimer, resetTimer } = UseTImer(); //taken from useTimer.js
+    const { seconds, startTimer, resetTimer } = UseTimer(); //taken from useTimer.js
 
 
 
@@ -104,6 +104,7 @@ const TypingBox = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleInput}
+                disabled={seconds === 0}
                 placeholder="Start typing here..."
                 className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-700 shadow-sm"
             />
