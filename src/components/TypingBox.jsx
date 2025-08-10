@@ -15,6 +15,9 @@ const TypingBox = () => {
 
     const { seconds, startTimer, resetTimer } = UseTimer(); //taken from useTimer.js
 
+    // check krne ke liye ki khatam hua ki nahi (below text)
+    const [isFinished, setIsFinished] = useState(false);
+
 
 
     // Restart Logic
@@ -27,6 +30,7 @@ const TypingBox = () => {
             setCharacterArray(characters);
             setCurrentIdx(0); // Reset currentIdx
             setHasStarted(false)
+            setIsFinished(false); //reset finished state
             setInputValue("")
             resetTimer();
         });
@@ -36,6 +40,12 @@ const TypingBox = () => {
     useEffect(() => {
         restartTest();
     }, []);
+
+    useEffect(() => {
+        if (seconds === 0 && hasStarted) {
+            setIsFinished(true);
+        }
+    }, [seconds, hasStarted]);
 
     // Typing Logic
     const handleInput = (e) => {
@@ -74,6 +84,7 @@ const TypingBox = () => {
     return (
         <div className="w-full flex flex-col items-center justify-center pt-8 px-4">
             <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
+
 
             <h2 className="text-xl mb-3 font-bold text-gray-200">Time Left:{seconds}s</h2>
 
