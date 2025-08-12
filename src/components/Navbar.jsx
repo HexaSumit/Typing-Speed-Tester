@@ -8,10 +8,10 @@ import { TypingContext } from '../context/TypingContext';
 
 
 const Navbar = () => {
-    const timings = [15, 30, 60, 120];
+    const timings = [15, 30, 45,60 ];
     const { setTime, hasStarted } = useContext(TypingContext)
     return (
-        <div className=' flex items-center p-6 gap-12 bg-gray-900 shadow-md'>
+        <div className=' flex items-center p-6  gap-12 bg-gray-900 shadow-md'>
             <div className=' flex items-center gap-3 text-yellow-500'>
                 <FaKeyboard size={30} className=' text-yellow-400' />
                 <h2 className=' text-3xl font-bold text-gray-200 '>Type_Master</h2>
