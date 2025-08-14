@@ -6,7 +6,8 @@ export function TypingProvider({ children }) {
     const [time, setTime] = useState(15);
 
     const [hasStarted, setHasStarted] = useState(false)
-    const value = { time, setTime,hasStarted, setHasStarted};
+    const [currentIdx, setCurrentIdx] = useState(0);
+    const value = { time, setTime,hasStarted, setHasStarted,currentIdx,setCurrentIdx};
 
     return (
         <TypingContext.Provider value={value}>

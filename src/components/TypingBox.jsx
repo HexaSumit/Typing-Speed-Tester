@@ -11,7 +11,7 @@ import ShowResult from "./ShowResult.jsx";
 const TypingBox = () => {
     const [inputValue, setInputValue] = useState("")
     const [characterArray, setCharacterArray] = useState([]);
-    const [currentIdx, setCurrentIdx] = useState(0);
+    const {currentIdx, setCurrentIdx} = useContext(TypingContext)
     const { hasStarted, setHasStarted } = useContext(TypingContext)//to check whether user started typing or not
 
     const { seconds, startTimer, resetTimer } = UseTimer(); //taken from useTimer.js
@@ -94,23 +94,21 @@ const TypingBox = () => {
                 />
             ) : (
                 <>
-                    <h2 className="text-xl mb-3 font-bold text-gray-200">Time Left:{seconds}s</h2>
+                    <h2 className="text-xl mb-3 font-bold text-gray-300">Time Left : {seconds}s</h2>
                     {/* Typing Text */}
-                    <div className="w-full max-w-7xl bg-gray-100 rounded-xl shadow-md p-4 mb-6 ">
+                    <div className="w-full max-w-6xl p-4 mb-6 ">
                         <p className="text-2xl text-gray-600 leading-relaxed font-mono tracking-wide whitespace-pre-wrap break-normal">
                             {characterArray.map((item, index) => (
                                 <span
                                     key={index}
                                     className={
                                         item.status === "correct"
-                                            ? "text-green-500"
+                                            ? "text-gray-100"
                                             : item.status === "incorrect"
                                                 ? "text-red-500"
                                                 : "text-gray-500"
                                     }
                                 >
-                                    {/* /u00A0 matlab space hai */}
-                                    {/* {item.char === " " ? "\u00A0" : item.char} */}
                                     {item.char}
                                 </span>
                             ))}
@@ -125,7 +123,7 @@ const TypingBox = () => {
                         onKeyDown={handleInput}
                         disabled={seconds === 0}
                         placeholder="Start typing here..."
-                        className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-700 shadow-sm"
+                        className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-500 shadow-sm"
                     />
 
                     {/* Restart Button */}
