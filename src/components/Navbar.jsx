@@ -5,26 +5,31 @@ import { IoMdTime } from "react-icons/io";
 import { FaKeyboard } from "react-icons/fa6";
 import { HiMiniWrenchScrewdriver } from "react-icons/hi2"
 import { TypingContext } from '../context/TypingContext';
+import { Link } from 'react-router-dom';
 
 
 const Navbar = () => {
-    const timings = [15, 30, 45,60 ];
+    const timings = [15, 30, 45, 60];
     const { setTime, hasStarted } = useContext(TypingContext)
     return (
         <div className=' flex items-center p-6  gap-12 bg-gray-900 shadow-md'>
-            <div className=' flex items-center gap-3 text-yellow-500'>
-                <FaKeyboard size={30} className=' text-yellow-400' />
-                <h2 className=' text-3xl font-bold text-gray-200 '>Type_Master</h2>
-            </div>
+            <Link to='/'>
+                <div className=' flex items-center gap-3 text-yellow-500'>
+                    <FaKeyboard size={30} className=' text-yellow-400' />
+                    <h2 className=' text-3xl font-bold text-gray-200 '>Type_Master</h2>
+                </div>
+            </Link>
             <div className=' flex items-center gap-8'>
                 <div className=' flex items-center gap-2'>
                     <CiKeyboard size={32} className=' text-gray-300 hover:text-yellow-400' />
                     <span className=' text-gray-200 hover:text-yellow-300'>Change Text</span>
                 </div>
-                <div className=' flex items-center gap-2'>
-                    <FaCrown size={28} className=' text-gray-300 hover:text-yellow-400' />
-                    <span className=' text-gray-200 hover:text-yellow-300'>Leaderboard</span>
-                </div>
+                <Link to='/leaderboard'>
+                    <div className=' flex items-center gap-2'>
+                        <FaCrown size={28} className=' text-gray-300 hover:text-yellow-400' />
+                        <span className=' text-gray-200 hover:text-yellow-300'>Leaderboard</span>
+                    </div>
+                </Link>
                 <div className=' flex items-center gap-2'>
                     <IoMdTime size={22} className=' text-gray-300 hover:text-yellow-400' />
                     <span className=' text-gray-200 hover:text-yellow-300'>time</span>

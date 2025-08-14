@@ -83,7 +83,7 @@ const TypingBox = () => {
     };
 
     return (
-        <div className=" bg-gray-800 w-full flex flex-col items-center justify-center px-4">
+        <div className=" bg-gray-800 w-full flex flex-col items-center p-4">
             <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
 
             {isFinished ? (
