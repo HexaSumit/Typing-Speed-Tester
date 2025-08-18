@@ -125,3 +125,15 @@ html, body {
     @apply bg-background text-foreground;
   }
 }
+.sliding-container {
+  height: 120px;       /* 3 lines × 40px (line height) */
+  overflow: hidden;    /* sirf 3 lines ki space visible hogi */
+  position: relative;
+}
+.sliding-wrapper {
+  transition: transform 0.3s ease-in-out;
+}
+.sliding-line {
+  line-height: 40px;   /* ek line ki height */
+}
+
