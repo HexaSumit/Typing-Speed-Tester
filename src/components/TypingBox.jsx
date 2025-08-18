@@ -5,139 +5,144 @@ import { Button } from "./ui/button.jsx";
 import UseTimer from "../hooks/UseTimer.js";
 import { TypingContext } from "../context/TypingContext.jsx";
 import ShowResult from "./ShowResult.jsx";
-
-
+import SlidingParagraph from "./slidingParagraph.jsx";
 
 const TypingBox = () => {
-    const [inputValue, setInputValue] = useState("")
-    const [characterArray, setCharacterArray] = useState([]);
-    const {currentIdx, setCurrentIdx} = useContext(TypingContext)
-    const { hasStarted, setHasStarted } = useContext(TypingContext)//to check whether user started typing or not
+  const [inputValue, setInputValue] = useState("");
+  const [characterArray, setCharacterArray] = useState([]);
+  const [linesArray, setLinesArray] = useState([]);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
-    const { seconds, startTimer, resetTimer } = UseTimer(); //taken from useTimer.js
+  const { currentIdx, setCurrentIdx } = useContext(TypingContext);
+  const { hasStarted, setHasStarted } = useContext(TypingContext);
+  const { seconds, startTimer, resetTimer } = UseTimer();
 
-    // check krne ke liye ki khatam hua ki nahi (below text)
-    const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
 
+  // Restart Logic
+  const restartTest = () => {
+    randomParagraphGenerator().then((text) => {
+      const words = text.split(" ");
+      const lines = [];
+      for (let i = 0; i < words.length; i += 10) {
+        lines.push(words.slice(i, i + 10).join(" "));
+      }
+      const characters = text.split("").map((ch) => ({
+        char: ch,
+        status: "not-typed",
+      }));
+      setCharacterArray(characters);
+      setLinesArray(lines);
+      setCurrentLineIndex(0);
+      setCurrentIdx(0);
+      setHasStarted(false);
+      setIsFinished(false);
+      setInputValue("");
+      resetTimer();
+    });
+  };
 
+  // Load paragraph on first render
+  useEffect(() => {
+    restartTest();
+  }, []);
 
-    // Restart Logic
-    const restartTest = () => {
-        randomParagraphGenerator().then((text) => {
-            const characters = text.split("").map((ch) => ({
-                char: ch,
-                status: "not-typed",
-            }));
-            setCharacterArray(characters);
-            setCurrentIdx(0); // Reset currentIdx
-            setHasStarted(false)
-            setIsFinished(false); //reset finished state
-            setInputValue("")
-            resetTimer();
-        });
-    };
+  // Finish test condition
+  useEffect(() => {
+    if ((seconds === 0 && hasStarted) || currentIdx === characterArray.length) {
+      setIsFinished(true);
+    }
+  }, [seconds, hasStarted, characterArray.length, currentIdx]);
 
-    // Load paragraph 
-    useEffect(() => {
-        restartTest();
-    }, []);
+  // Typing logic
+  const handleInput = (e) => {
+    const key = e.key;
 
-    useEffect(() => {
-        if (seconds === 0 && hasStarted || currentIdx === characterArray.length) {
-            setIsFinished(true);
-        }
-    }, [seconds, hasStarted,characterArray.length]);
+    if (!hasStarted && key.length === 1) {
+      setHasStarted(true);
+      startTimer();
+    }
 
-    // Typing Logic
-    const handleInput = (e) => {
-        const key = e.key;
+    if (key === "Backspace" && currentIdx > 0) {
+      const updatedArray = [...characterArray];
+      updatedArray[currentIdx - 1].status = "not-typed";
+      setCharacterArray(updatedArray);
+      setCurrentIdx((prev) => prev - 1);
+      return;
+    }
 
-        //  First key press par timer start
-        if (!hasStarted && key.length === 1) {
-            setHasStarted(true);
-            startTimer();
-        }
+    if (currentIdx < characterArray.length && key.length === 1) {
+      const updatedArray = [...characterArray];
 
-        // Backspace case
-        if (key === "Backspace" && currentIdx > 0) {
-            const updatedArray = [...characterArray];
-            updatedArray[currentIdx - 1].status = "not-typed";
-            setCharacterArray(updatedArray);
-            setCurrentIdx((prev) => prev - 1);
-            return;
-        }
+      if (key === characterArray[currentIdx].char) {
+        updatedArray[currentIdx].status = "correct";
+      } else {
+        updatedArray[currentIdx].status = "incorrect";
+      }
 
-        //  Normal character case
-        if (currentIdx < characterArray.length && key.length === 1) {
-            const updatedArray = [...characterArray];
+      setCharacterArray(updatedArray);
+      setCurrentIdx((prev) => prev + 1);
 
-            if (key === characterArray[currentIdx].char) {
-                updatedArray[currentIdx].status = "correct";
-            } else {
-                updatedArray[currentIdx].status = "incorrect";
-            }
+      // Sliding trigger: when second line is finished
+      const charsBeforeSecondLine =
+        linesArray.slice(0, currentLineIndex + 2).join(" ").length +
+        (currentLineIndex + 2 > 0 ? 1 : 0);
 
-            setCharacterArray(updatedArray);
-            setCurrentIdx((prev) => prev + 1);
-        }
-    };
+      if (currentIdx + 1 === charsBeforeSecondLine) {
+        setCurrentLineIndex((prev) => prev + 1);
+      }
+    }
+  };
 
-    return (
-        <div className=" bg-gray-800 w-full flex flex-col items-center p-4">
-            <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
+  return (
+    <div className="bg-gray-800 w-full flex flex-col items-center p-4">
+      <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
 
-            {isFinished ? (
-                <ShowResult
-                    charArray={characterArray}
-                    totalTime={seconds}
-                    onRestart={restartTest}
-                />
-            ) : (
-                <>
-                    <h2 className="text-xl mb-3 font-bold text-gray-300">Time Left : {seconds}s</h2>
-                    {/* Typing Text */}
-                    <div className="w-full max-w-6xl p-4 mb-6 ">
-                        <p className="text-2xl text-gray-600 leading-relaxed font-mono tracking-wide whitespace-pre-wrap break-normal">
-                            {characterArray.map((item, index) => (
-                                <span
-                                    key={index}
-                                    className={
-                                        item.status === "correct"
-                                            ? "text-gray-100"
-                                            : item.status === "incorrect"
-                                                ? "text-red-500"
-                                                : "text-gray-500"
-                                    }
-                                >
-                                    {item.char}
-                                </span>
-                            ))}
-                        </p>
-                    </div>
+      {isFinished ? (
+        <ShowResult
+          charArray={characterArray}
+          totalTime={seconds}
+          onRestart={restartTest}
+        />
+      ) : (
+        <>
+          <h2 className="text-xl mb-3 font-bold text-gray-300">
+            Time Left : {seconds}s
+          </h2>
 
-                    {/*Input Field */}
-                    <input
-                        autoFocus
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleInput}
-                        disabled={seconds === 0}
-                        placeholder="Start typing here..."
-                        className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-500 shadow-sm"
-                    />
+          <div className="w-full max-w-6xl p-4 mb-6">
+            <SlidingParagraph
+              characterArray={characterArray}
+              linesArray={linesArray}
+              currentLineIndex={currentLineIndex}
+            />
+          </div>
 
-                    {/* Restart Button */}
-                    <div className="mt-4">
-                        <Button onClick={restartTest} variant="destructive" className="flex items-center gap-2">
-                            <VscDebugRestart size={20} />
-                            Restart Test
-                        </Button>
-                    </div>
-                    
-                    </>
-            )}
-        </div>
-    );
+          <input
+            autoFocus
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleInput}
+            disabled={seconds === 0}
+            placeholder="Start typing here..."
+            className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-500 shadow-sm"
+            />
+           
+
+          <div className="mt-4">
+            <Button
+              onClick={restartTest}
+              variant="destructive"
+              className="flex items-center gap-2"
+            >
+              <VscDebugRestart size={20} />
+              Restart Test
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default TypingBox;
