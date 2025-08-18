@@ -1,26 +1,29 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { VscDebugRestart } from "react-icons/vsc";
+import UseTimer from "../hooks/UseTimer";
+import { TypingContext } from "../context/TypingContext";
+import { useContext } from "react";
 
-const ShowResult = ({ charArray, totalTime, onRestart }) => {
+const ShowResult = ({ charArray, onRestart }) => {
+    const { seconds } = UseTimer();
+
+
     // Calculate correct characters
     const correctChars = charArray.filter((c) => c.status === "correct").length;
 
-    //  Calculate incorrect characters
+    // Calculate incorrect characters
     const incorrectChars = charArray.filter((c) => c.status === "incorrect").length;
 
-    // WPM calculation
-    const totalTestTime = 60; // allotted test time in seconds
-    const elapsedTime = totalTestTime - totalTime; // jo tum pass kar rahe ho wo remaining hai
-    const timeMinutes = elapsedTime / 60;
+    const timeInMinutes = seconds / 60;
 
-    const wpm = timeMinutes > 0
-        ? Math.round((correctChars / 5) / timeMinutes)
-        : 0;
+    //WPM
+    const wpm = timeInMinutes > 0 ? (correctChars / 5) / timeInMinutes : 0;
 
     // Accuracy calculation
     const totalTyped = correctChars + incorrectChars;
-    const accuracy = totalTyped > 0 ? ((correctChars / totalTyped) * 100).toFixed(1) : 0;
+    const accuracy =
+        totalTyped > 0 ? ((correctChars / totalTyped) * 100).toFixed(1) : 0;
 
     return (
         <div className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 max-w-md w-full">
