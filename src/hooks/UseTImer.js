@@ -2,15 +2,15 @@ import React, { useContext, useRef, useState, useEffect } from 'react'
 import { TypingContext } from '../context/TypingContext'
 
 const UseTimer = () => {
-    const { time } = useContext(TypingContext)
-    const [seconds, setSeconds] = useState(time)
+    const { time,seconds, setSeconds } = useContext(TypingContext)
+    // const [seconds, setSeconds] = useState(time)
     let intervalRef = useRef(null)
 
     useEffect(() => {
         setSeconds(time); // Naya time set
         clearInterval(intervalRef.current); // Purana timer stop
         intervalRef.current = null; // Reference clear
-    }, [time]);
+    }, [time,setSeconds]);
 
     const startTimer = () => {
         if (intervalRef.current) return;
