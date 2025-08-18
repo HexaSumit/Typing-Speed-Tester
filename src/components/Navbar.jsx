@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 
 
 const Navbar = () => {
-    const timings = [15, 30, 45, 60];
+    const timings = [30, 45, 60, 120];
     const { setTime, hasStarted } = useContext(TypingContext)
     return (
         <div className=' flex items-center p-6  gap-12 bg-gray-900 shadow-md'>
