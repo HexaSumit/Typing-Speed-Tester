@@ -16,30 +16,6 @@ const TypingBox = ({ value }) => {
   const { hasStarted, setHasStarted } = useContext(TypingContext);
   const { seconds, startTimer, resetTimer } = UseTimer();
 
-  // const [isFinished, setIsFinished] = useState(false);
-
-  // // Restart Logic
-  // const restartTest = () => {
-  //   randomParagraphGenerator().then((text) => {
-  //     const words = text.split(" ");
-  //     const lines = [];
-  //     for (let i = 0; i < words.length; i += 10) {
-  //       lines.push(words.slice(i, i + 10).join(" "));
-  //     }
-  //     const characters = text.split("").map((ch) => ({
-  //       char: ch,
-  //       status: "not-typed",
-  //     }));
-  //     setCharacterArray(characters);
-  //     setLinesArray(lines);
-  //     setCurrentLineIndex(0);
-  //     setCurrentIdx(0);
-  //     setHasStarted(false);
-  //     setIsFinished(false);
-  //     setInputValue("");
-  //     resetTimer();
-  //   });
-  // };
 
   // Load paragraph on first render
   useEffect(() => {
