@@ -7,40 +7,39 @@ import { TypingContext } from "../context/TypingContext.jsx";
 import ShowResult from "./ShowResult.jsx";
 import SlidingParagraph from "./slidingParagraph.jsx";
 
-const TypingBox = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [characterArray, setCharacterArray] = useState([]);
-  const [linesArray, setLinesArray] = useState([]);
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+const TypingBox = ({ value }) => {
+  const { inputValue, setInputValue, characterArray, setCharacterArray, linesArray, setLinesArray,
+    currentLineIndex, setCurrentLineIndex, isFinished, setIsFinished, restartTest } = value
+
 
   const { currentIdx, setCurrentIdx } = useContext(TypingContext);
   const { hasStarted, setHasStarted } = useContext(TypingContext);
   const { seconds, startTimer, resetTimer } = UseTimer();
 
-  const [isFinished, setIsFinished] = useState(false);
+  // const [isFinished, setIsFinished] = useState(false);
 
-  // Restart Logic
-  const restartTest = () => {
-    randomParagraphGenerator().then((text) => {
-      const words = text.split(" ");
-      const lines = [];
-      for (let i = 0; i < words.length; i += 10) {
-        lines.push(words.slice(i, i + 10).join(" "));
-      }
-      const characters = text.split("").map((ch) => ({
-        char: ch,
-        status: "not-typed",
-      }));
-      setCharacterArray(characters);
-      setLinesArray(lines);
-      setCurrentLineIndex(0);
-      setCurrentIdx(0);
-      setHasStarted(false);
-      setIsFinished(false);
-      setInputValue("");
-      resetTimer();
-    });
-  };
+  // // Restart Logic
+  // const restartTest = () => {
+  //   randomParagraphGenerator().then((text) => {
+  //     const words = text.split(" ");
+  //     const lines = [];
+  //     for (let i = 0; i < words.length; i += 10) {
+  //       lines.push(words.slice(i, i + 10).join(" "));
+  //     }
+  //     const characters = text.split("").map((ch) => ({
+  //       char: ch,
+  //       status: "not-typed",
+  //     }));
+  //     setCharacterArray(characters);
+  //     setLinesArray(lines);
+  //     setCurrentLineIndex(0);
+  //     setCurrentIdx(0);
+  //     setHasStarted(false);
+  //     setIsFinished(false);
+  //     setInputValue("");
+  //     resetTimer();
+  //   });
+  // };
 
   // Load paragraph on first render
   useEffect(() => {
@@ -96,6 +95,7 @@ const TypingBox = () => {
       }
     }
   };
+  // console.log(seconds)
 
   return (
     <div className="bg-gray-800 w-full flex flex-col items-center p-4">
@@ -139,7 +139,7 @@ const TypingBox = () => {
               className="flex items-center gap-2"
             >
               <VscDebugRestart size={20} />
-              Restart Test
+              Change Text
             </Button>
           </div>
         </>
