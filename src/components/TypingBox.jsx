@@ -49,7 +49,10 @@ const TypingBox = () => {
 
   // Finish test condition
   useEffect(() => {
-    if ((seconds === 0 && hasStarted) || currentIdx === characterArray.length) {
+    if (
+      hasStarted &&
+      ((seconds === 0) || (currentIdx === characterArray.length))
+    ) {
       setIsFinished(true);
     }
   }, [seconds, hasStarted, characterArray.length, currentIdx]);
@@ -126,8 +129,8 @@ const TypingBox = () => {
             disabled={seconds === 0}
             placeholder="Start typing here..."
             className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-500 shadow-sm"
-            />
-           
+          />
+
 
           <div className="mt-4">
             <Button
