@@ -8,7 +8,7 @@ import { TypingContext } from '../context/TypingContext';
 import { Link } from 'react-router-dom';
 
 
-const Navbar = () => {
+const Navbar = ({restartTest}) => {
     const timings = [30, 45, 60, 120];
     const { setTime, hasStarted } = useContext(TypingContext)
     return (
@@ -20,7 +20,7 @@ const Navbar = () => {
                 </div>
             </Link>
             <div className=' flex items-center gap-8'>
-                <div className=' flex items-center gap-2'>
+                <div className=' flex items-center gap-2' onClick={restartTest}>
                     <CiKeyboard size={32} className=' text-gray-300 hover:text-yellow-400' />
                     <span className=' text-gray-200 hover:text-yellow-300'>Change Text</span>
                 </div>
