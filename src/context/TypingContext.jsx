@@ -3,7 +3,7 @@ import { createContext,useState } from "react";
 export const TypingContext = createContext();
 
 export function TypingProvider({ children }) {
-    const [time, setTime] = useState(15);
+    const [time, setTime] = useState(30);
 
     const [hasStarted, setHasStarted] = useState(false)
     const [currentIdx, setCurrentIdx] = useState(0);
