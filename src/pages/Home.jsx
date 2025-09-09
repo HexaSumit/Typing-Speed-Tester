@@ -2,9 +2,8 @@ import React, { useContext, useState } from 'react'
 import TypingBox from '../components/TypingBox'
 import Navbar from '../components/Navbar'
 import { TypingContext } from '../context/TypingContext';
-import UseTimer from '../hooks/UseTimer';
+import UseTimer from '../hooks/UseTimer.js';
 import { randomParagraphGenerator } from '../utils/Api';
-// import ShowResult from '../components/ShowResult'
 
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
