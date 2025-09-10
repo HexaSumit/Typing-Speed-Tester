@@ -1,12 +1,12 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { VscDebugRestart } from "react-icons/vsc";
-import UseTimer from "../hooks/UseTimer";
 import { TypingContext } from "../context/TypingContext";
 import { useContext } from "react";
+import useTimer from "../hooks/useTimer";
 
 const ShowResult = ({ charArray, onRestart }) => {
-    const { seconds } = UseTimer();
+    const { seconds } = useTimer();
 
 
     // Calculate correct characters

@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
 import { TypingContext } from '../context/TypingContext'
 
-const UseTimer = () => {
+const useTimer = () => {
     const { time,seconds, setSeconds } = useContext(TypingContext)
     // const [seconds, setSeconds] = useState(time)
     let intervalRef = useRef(null)
@@ -35,4 +35,4 @@ const UseTimer = () => {
     return { seconds, startTimer, resetTimer };
 }
 
-export default UseTimer
+export default useTimer

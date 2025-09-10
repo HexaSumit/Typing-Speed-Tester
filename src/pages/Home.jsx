@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react'
 import TypingBox from '../components/TypingBox'
 import Navbar from '../components/Navbar'
 import { TypingContext } from '../context/TypingContext';
-import UseTimer from '../hooks/UseTimer.js';
 import { randomParagraphGenerator } from '../utils/Api';
+import useTimer from '../hooks/useTimer.js';
 
 const Home = () => {
   const [inputValue, setInputValue] = useState("");
@@ -13,7 +13,7 @@ const Home = () => {
 
   const { currentIdx, setCurrentIdx } = useContext(TypingContext);
   const { hasStarted, setHasStarted } = useContext(TypingContext);
-  const { seconds, startTimer, resetTimer,setSeconds } = UseTimer();
+  const { seconds, startTimer, resetTimer,setSeconds } = useTimer();
 
   const [isFinished, setIsFinished] = useState(false);
 

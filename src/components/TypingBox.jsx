@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { VscDebugRestart } from "react-icons/vsc";
 import { randomParagraphGenerator } from "../utils/Api.js";
 import { Button } from "./ui/button.jsx";
-import UseTimer from "../hooks/UseTimer.js";
 import { TypingContext } from "../context/TypingContext.jsx";
 import ShowResult from "./ShowResult.jsx";
 import SlidingParagraph from "./slidingParagraph.jsx";
+import useTimer from "../hooks/useTimer.js";
 
 const TypingBox = ({ value }) => {
   const { inputValue, setInputValue, characterArray, setCharacterArray, linesArray, setLinesArray,
@@ -14,7 +14,7 @@ const TypingBox = ({ value }) => {
 
   const { currentIdx, setCurrentIdx } = useContext(TypingContext);
   const { hasStarted, setHasStarted } = useContext(TypingContext);
-  const { seconds, startTimer, resetTimer } = UseTimer();
+  const { seconds, startTimer, resetTimer } = useTimer();
 
 
   // Load paragraph on first render
