@@ -8,14 +8,23 @@ import SlidingParagraph from "./slidingParagraph.jsx";
 import useTimer from "../hooks/useTimer.js";
 
 const TypingBox = ({ value }) => {
-  const { inputValue, setInputValue, characterArray, setCharacterArray, linesArray, setLinesArray,
-    currentLineIndex, setCurrentLineIndex, isFinished, setIsFinished, restartTest } = value
-
+  const {
+    inputValue,
+    setInputValue,
+    characterArray,
+    setCharacterArray,
+    linesArray,
+    setLinesArray,
+    currentLineIndex,
+    setCurrentLineIndex,
+    isFinished,
+    setIsFinished,
+    restartTest,
+  } = value;
 
   const { currentIdx, setCurrentIdx } = useContext(TypingContext);
   const { hasStarted, setHasStarted } = useContext(TypingContext);
   const { seconds, startTimer, resetTimer } = useTimer();
-
 
   // Load paragraph on first render
   useEffect(() => {
@@ -24,10 +33,7 @@ const TypingBox = ({ value }) => {
 
   // Finish test condition
   useEffect(() => {
-    if (
-      hasStarted &&
-      ((seconds === 0) || (currentIdx === characterArray.length))
-    ) {
+    if (hasStarted && (seconds === 0 || currentIdx === characterArray.length)) {
       setIsFinished(true);
     }
   }, [seconds, hasStarted, characterArray.length, currentIdx]);
@@ -75,7 +81,9 @@ const TypingBox = ({ value }) => {
 
   return (
     <div className="bg-gray-800 w-full flex flex-col items-center p-4">
-      <h1 className="text-4xl font-bold mb-6 text-gray-700">Typing Speed Test</h1>
+      <h1 className="text-4xl font-bold mb-6 text-gray-700">
+        Typing Speed Test
+      </h1>
 
       {isFinished ? (
         <ShowResult
@@ -89,7 +97,7 @@ const TypingBox = ({ value }) => {
             Time Left : {seconds}s
           </h2>
 
-          <div className="w-full max-w-6xl p-4 mb-6">
+          <div className="w-full max-w-4xl mx-auto p-6 mb-8 text-center">
             <SlidingParagraph
               characterArray={characterArray}
               linesArray={linesArray}
@@ -106,7 +114,6 @@ const TypingBox = ({ value }) => {
             placeholder="Start typing here..."
             className="border-2 border-gray-300 focus:border-blue-500 outline-none p-3 rounded-lg w-96 text-lg text-gray-500 shadow-sm"
           />
-
 
           <div className="mt-4">
             <Button

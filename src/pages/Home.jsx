@@ -45,7 +45,7 @@ const Home = () => {
     }
 
   return (
-    <div className=''>
+    <div className='bg-gray-800 min-h-screen w-full flex flex-col items-center p-4'>
         <Navbar restartTest={restartTest}/>
         <TypingBox value={value}/>
     </div>
